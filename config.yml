@@ -1,0 +1,30 @@
+CONFIG_NAME: tire
+
+dataset_name: tire
+data_dir: ./data
+
+gpu_id: 0
+imsize: 256
+z_dim: 256
+condi_dim: 256
+manual_seed: 100
+cuda: True
+beta_start: 0.0001
+beta_end: 0.02
+
+stamp: 'normal'
+state_epoch: 100
+max_epoch: 1000
+batch_size: 256
+nf: 32
+ch_size: 1
+max_gauge_dim: 400
+
+model: base
+
+gen_interval: 200
+test_interval: 500
+save_interval: 1000
+
+truncation: True
+trunc_rate: 0.88
