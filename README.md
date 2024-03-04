@@ -1,36 +1,15 @@
-# hankook_tire
+# CTIP
+CTIP: Towards Accurate Tabular‑to‑Image Generation
 
-# Setting
-- install requirements
-```
-pip install -r requirements.txt
-```
-- Download data(zip, csv) to data file
-- data/ in Footprint_DB_Refine_v2.csv
-- data/ in Footshape_Gray_Image_All.zip
+# Overview
 
-- unzip settings
-```
-apt-get update
-apt install unzip
-apt install zip
-```
+![](main_fig.png)
 
-- unzip to data/Footprint/ in Footprint image
-```
-unzip data/Gray_Image_for_AI.zip -d data/Footprint/
-unzip data/Footprint_latent.zip -d data/
-```
+Despite significant advancements in image generative models, their direct applicability to industry, particularly in manufacturing, remains limited. Existing approaches often overlook the unique challenges posed by tabular data, a prevalent format in industrial settings. In this research, we introduce the Tabular-to-Image method, which aims to generate target images from tabular inputs, addressing the gap in current research. Our approach, which utilizes Contrastive Tabular-Image Pre-Training (CTIP), shows improved image quality and adaptability for both Generative Adversarial Networks(GAN)-based and diffusion-based models. Through experiments with real-world manufacturing data, we present the effectiveness of CTIP, especially in scenarios with limited tabular features, called feature few-shot or feature zero-shot. Our work not only offers a practical solution for image generation in industry but also emphasizes the significance of considering tabular data in generative modeling research.
 <br />
-
-# Multi-GPU command
-```
-torchrun --nproc_per_node=2 --nnodes=1 --node_rank=0 main.py
 ```
 
-# Setting Git
-```
-git config --global user.email "dybroh@kaist.ac.kr"
-git config --global user.name "Noverse0"
-```
+# Experiment
+Unfortunately, data security does not allow us to disclose the Dataset we used, so we exclude the code related to the Dataset. However, you should be able to use it if you configure a properly formatted Dataset and Dataloader.  
+
 <br />

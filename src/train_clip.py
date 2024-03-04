@@ -33,7 +33,11 @@ def train_clip(dataloader, condition_encoder, image_encoder, optimizer_condition
         # Image_encoder(ex, CNN, ViT)
         I_e = image_encoder(imgs)
 
-        logits = torch.matmul(C_e, I_e.T) * torch.exp(t)
+        # normalized features
+        normalized_C = C_e / C_e.norm(dim=-1, keepdim=True)
+        normalized_I = I_e / I_e.norm(dim=-1, keepdim=True)
+
+        logits = torch.matmul(normalized_C, normalized_I.T) * torch.exp(t)
         labels = torch.arange(logits.shape[0], device=device)
         loss = (loss_fn(logits, labels) + loss_fn(logits.T, labels)) / 2
         total_loss += loss.item()
