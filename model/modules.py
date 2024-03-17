@@ -159,8 +159,8 @@ class Up(nn.Module):
         )
 
     def forward(self, x, skip_x, t):
-        x = self.up(x)
         x = torch.cat([skip_x, x], dim=1)
+        x = self.up(x)
         x = self.conv(x)
         emb = self.emb_layer(t)[:, :, None, None].repeat(1, 1, x.shape[-2], x.shape[-1])
         return x + emb
@@ -194,15 +194,15 @@ class UNet(nn.Module):
             self.bot3 = DoubleConv(1024, 512)
 
         self.ca5 = CrossAttention(512, n_head, self.condi_dim)
-        self.up1 = Up(1024, 256)
-        self.ca6 = CrossAttention(256, n_head, self.condi_dim)
-        self.up2 = Up(512, 128)
-        self.ca7 = CrossAttention(128, n_head, self.condi_dim)
-        self.up3 = Up(256, 64)
-        self.ca8 = CrossAttention(64, n_head, self.condi_dim)
-        self.up4 = Up(128, 64)
+        self.up1 = Up(1024, 512)
+        self.ca6 = CrossAttention(512, n_head, self.condi_dim)
+        self.up2 = Up(1024, 256)
+        self.ca7 = CrossAttention(256, n_head, self.condi_dim)
+        self.up3 = Up(512, 128)
+        self.ca8 = CrossAttention(128, n_head, self.condi_dim)
+        self.up4 = Up(256, 128)
         
-        self.outc = nn.Conv2d(64, self.c_out, kernel_size=1)
+        self.outc = nn.Conv2d(128, self.c_out, kernel_size=1)
 
     def pos_encoding(self, t, channels):
         inv_freq = 1.0 / (
@@ -231,13 +231,13 @@ class UNet(nn.Module):
         x6 = self.bot3(x6) # 64, 512, 2, 2
         
         x = self.ca5(x6, condi)
-        x = self.up1(x, x4, t)
+        x = self.up1(x, x5, t)
         x = self.ca6(x, condi)
-        x = self.up2(x, x3, t)
+        x = self.up2(x, x4, t)
         x = self.ca7(x, condi)
-        x = self.up3(x, x2, t)
+        x = self.up3(x, x3, t)
         x = self.ca8(x, condi)
-        x = self.up4(x, x1, t)
+        x = self.up4(x, x2, t)
         
         output = self.outc(x)
         return output

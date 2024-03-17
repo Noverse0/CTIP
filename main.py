@@ -21,7 +21,6 @@ from data.data_loader import get_images_dataloader
 from src.test import sample, test
 from src.train_clip import train_clip
 from model.modules import EMA, UNet_conditional
-from model.vautoencoder import VariationalAutoEncoder
 from torchvision.utils import make_grid, save_image
 
 import warnings
