@@ -30,7 +30,7 @@ ROOT_PATH = osp.abspath(osp.join(osp.dirname(osp.abspath(__file__)),  "."))
 
 def parse_args():
     # Training settings
-    parser = argparse.ArgumentParser(description='Text2Img')
+    parser = argparse.ArgumentParser(description='Tabular2Img')
     parser.add_argument('--cfg', dest='cfg_file', type=str, default='./config.yml',
                         help='optional config file')
     parser.add_argument('--num_workers', type=int, default=16,
@@ -65,14 +65,6 @@ def parse_args():
                         help='clip model path')
     parser.add_argument('--clip_t', type=float, default=0.01,
                         help='clip t')
-    parser.add_argument('--vae_train', type=bool, default=False,
-                        help='vae train')
-    parser.add_argument('--vae_epoch', type=int, default=5,
-                        help='vae training max epoch')
-    parser.add_argument('--vae_path', type=str, default='./ae_saved_models/',
-                        help='vae model path')
-    parser.add_argument('--random_sample', action='store_true',default=True, 
-                        help='whether to sample the dataset with random sampler')
 
     args = parser.parse_args()
     return args
@@ -134,7 +126,7 @@ def main(args):
     print('vae model loaded')
     ae_model = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse").to(args.device)
 
-    # train dataset에 대한 ground truth image 생성
+    # ground truth image generation using vae
     if (args.multi_gpus==True) and (get_rank() != 0):
         None
     else:
@@ -170,7 +162,7 @@ def main(args):
     if (args.multi_gpus==True) and (get_rank() != 0):
         None
     else:
-        # pprint.pprint(args)
+        pprint.pprint(args)
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
         arg_save_path = osp.join(log_dir, 'args.yaml')
@@ -190,7 +182,6 @@ def main(args):
         start_t = time.time()
         # training
         args.current_epoch = epoch
-        
         avg_loss = train_step(unet, condition_encoder, train_dl, optimizer, scheduler, loss_fn, ema, ema_model, scaler, alpha_hat, args)
         avg_losses.append(avg_loss)
         print('The epoch %d avg_loss: %.2f'%(epoch, avg_loss))

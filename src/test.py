@@ -71,3 +71,4 @@ def test(dataloader, model, condition_encoder, ema_model, use_ema, ae_model,
             
             fullpath = '%s/%s_Real.png' % (folder, filename[j])
             vutils.save_image(imgs[j].data, fullpath, normalize=True)
+            

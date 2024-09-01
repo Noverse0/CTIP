@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
+
 class Spec_encoder(nn.Module):
     def __init__(self, input_features, image_size):
         super(Spec_encoder, self).__init__()
@@ -13,6 +15,7 @@ class Spec_encoder(nn.Module):
         x = torch.relu(self.fc1_n(x))
         x = self.fc2_n(x)
         return x
+
 
 class Gauge_encoder(nn.Module):
     def __init__(self, num_gauge, input_dim=400, image_size=100):
@@ -33,6 +36,7 @@ class Gauge_encoder(nn.Module):
         x = self.flatten(x)
         x = self.fc_layer(x)
         return x
+
 
 class Condition_encoder(nn.Module):
     def __init__(self, input_features, condi_dim, max_gauge_dim, num_gauge):
